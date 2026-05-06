@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Habit Tracker Dashboard
 
-## Getting Started
+A premium, interactive Habit Tracker application built with Next.js, Supabase, and Framer Motion. This dashboard provides a comprehensive view of your daily habits, progress analytics, and personal health metrics.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   **Interactive Dashboard**: A beautiful, glassmorphic UI with dynamic animations.
+-   **Habit Tracking**: Manage your daily tasks with a real-time Todo list synced to Supabase.
+-   **Analytics & Insights**:
+    -   **Weekly Progress Chart**: Visual representation of your task completion rates.
+    -   **Weight Analysis**: Track your weight over time with interactive charts and historical data.
+    -   **Personal Streaks**: Stay motivated with streak tracking for consistent habit formation.
+-   **Smart Widgets**:
+    -   **Weather Integration**: Real-time weather updates based on your location.
+    -   **Daily Quotes**: Get inspired with a fresh quote every day.
+    -   **Calendar View**: Stay on top of your schedule.
+    -   **"Should Do" Suggestions**: AI-style suggestions for your next tasks.
+-   **Authentication**: Secure user login and data persistence via Supabase.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   **Framework**: Next.js 15 (App Router)
+-   **Styling**: Tailwind CSS
+-   **Animations**: Framer Motion
+-   **Database & Auth**: Supabase
+-   **State Management**: Zustand
+-   **Charts**: Recharts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏁 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+-   Node.js (Latest LTS)
+-   npm / yarn / pnpm
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/shaikhmohammed07/Habit-Tracker.git
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Set up environment variables:
+    Create a `.env.local` file in the root directory and add your Supabase credentials:
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
+4.  Run the development server:
+    ```bash
+    npm run dev
+    ```
 
-## Deploy on Vercel
+## 📄 License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is open-source and available under the MIT License.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

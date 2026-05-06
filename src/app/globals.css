@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-primary: #FF9671;
+  --color-primary-hover: #ff7d50;
+  --color-text-main: #2D3142;
+  --color-text-muted: #8E91A0;
+  --color-success: #90BE6D;
+  --color-accent: #F9C74F;
+  --color-card: #FFFFFF;
+  --color-app-bg: #FAF8F5;
+}
+
+:root {
+  --background: #F3F6F8;
+  --foreground: #2D3142;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E2E4E9;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C4C7D0;
+}
+
+/* Hide scrollbar but keep functionality for specific elements */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

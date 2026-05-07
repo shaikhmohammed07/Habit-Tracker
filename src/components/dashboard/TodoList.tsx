@@ -217,11 +217,11 @@ export default function TodoList() {
                   );
                 })}
               </div>
-              <div className="relative mt-1">
+              <div className="relative mt-1 flex gap-2">
                 <input
                   type="date"
                   className={cn(
-                    "w-full text-xs border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-[var(--color-primary)] transition-all",
+                    "flex-1 text-xs border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-[var(--color-primary)] transition-all",
                     !recurringDay ? "bg-white" : "bg-gray-50 text-gray-400"
                   )}
                   value={newDate || ""}
@@ -231,12 +231,32 @@ export default function TodoList() {
                   }}
                   required={!recurringDay}
                 />
-                {recurringDay && (
-                  <div className="text-[9px] text-[var(--color-primary)] font-bold mt-1 px-1">
-                    This task will repeat every {recurringDay}
-                  </div>
-                )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (recurringDay === "Everyday") {
+                      setRecurringDay(null);
+                      setNewDate(selectedDate);
+                    } else {
+                      setRecurringDay("Everyday");
+                      setNewDate(null);
+                    }
+                  }}
+                  className={cn(
+                    "px-3 text-[10px] font-bold rounded-lg border transition-all whitespace-nowrap",
+                    recurringDay === "Everyday"
+                      ? "bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-sm" 
+                      : "bg-gray-50 border-gray-100 text-gray-500 hover:border-gray-200"
+                  )}
+                >
+                  Everyday
+                </button>
               </div>
+              {recurringDay && (
+                <div className="text-[9px] text-[var(--color-primary)] font-bold mt-1 px-1">
+                  This task will repeat {recurringDay === "Everyday" ? "every day" : `every ${recurringDay}`}
+                </div>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -244,7 +264,7 @@ export default function TodoList() {
               <Clock className="absolute left-3 top-2.5 text-gray-400" size={14} />
               <input
                 type="time"
-                placeholder="Time (e.g. 09:00 AM)"
+                placeholder="Time"
                 className="w-full text-xs border border-gray-200 rounded-lg pl-9 pr-3 py-2 outline-none focus:border-[var(--color-primary)]"
                 value={newTime}
                 onChange={e => setNewTime(e.target.value)}

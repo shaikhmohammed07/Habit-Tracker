@@ -27,7 +27,7 @@ export const getTodos = async (dateStr?: string) => {
   if (dateStr) {
     const { format, parseISO } = await import('date-fns');
     const dayOfWeek = format(parseISO(dateStr), 'EEE');
-    query = query.or(`date.eq.${dateStr},recurring_day.eq.${dayOfWeek}`);
+    query = query.or(`date.eq.${dateStr},recurring_day.eq.${dayOfWeek},recurring_day.eq.Everyday`);
   }
   
   const { data, error } = await query.order('created_at', { ascending: false });

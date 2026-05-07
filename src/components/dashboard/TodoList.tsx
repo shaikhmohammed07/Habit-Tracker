@@ -78,31 +78,31 @@ export default function TodoList() {
     <div className="flex flex-col h-full relative p-2">
       <div className="flex justify-between items-center mb-6">
         <div className="flex flex-col">
-          <h3 className="text-lg font-bold">
+          <h3 className="text-xl sm:text-lg font-bold">
             {isSameDay(parseISO(selectedDate), new Date()) ? "Today's" : format(parseISO(selectedDate), "MMM dd's")} Todos
           </h3>
           <div className="flex items-center gap-2 mt-1">
             <button 
               onClick={() => setSelectedDate(format(subDays(parseISO(selectedDate), 1), 'yyyy-MM-dd'))}
-              className="p-1 hover:bg-gray-100 rounded text-gray-400"
+              className="p-2 sm:p-1 hover:bg-gray-100 rounded text-gray-400"
             >
-              <span className="text-[10px]">❮</span>
+              <span className="text-xs sm:text-[10px]">❮</span>
             </button>
-            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+            <span className="text-xs sm:text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
               {format(parseISO(selectedDate), "EEEE")}
             </span>
             <button 
               onClick={() => setSelectedDate(format(addDays(parseISO(selectedDate), 1), 'yyyy-MM-dd'))}
-              className="p-1 hover:bg-gray-100 rounded text-gray-400"
+              className="p-2 sm:p-1 hover:bg-gray-100 rounded text-gray-400"
             >
-              <span className="text-[10px]">❯</span>
+              <span className="text-xs sm:text-[10px]">❯</span>
             </button>
           </div>
         </div>
         <button 
           onClick={() => setSelectedDate(format(new Date(), 'yyyy-MM-dd'))}
           className={cn(
-            "text-[10px] font-bold px-2 py-1 rounded transition-colors",
+            "text-xs sm:text-[10px] font-bold px-3 py-1.5 sm:px-2 sm:py-1 rounded transition-colors",
             isSameDay(parseISO(selectedDate), new Date()) 
               ? "bg-orange-100 text-[var(--color-primary)]" 
               : "bg-gray-100 text-gray-500 hover:bg-gray-200"
@@ -137,7 +137,7 @@ export default function TodoList() {
                   <button
                     onClick={() => toggleTodo(todo.id, todo.recurring_day ? todo.last_completed_date === selectedDate : todo.is_completed)}
                     className={cn(
-                      "mt-0.5 w-[22px] h-[22px] rounded border flex items-center justify-center flex-shrink-0 transition-colors",
+                      "mt-0.5 w-6 h-6 sm:w-[22px] sm:h-[22px] rounded border flex items-center justify-center flex-shrink-0 transition-colors",
                       (todo.recurring_day ? todo.last_completed_date === selectedDate : todo.is_completed)
                         ? "bg-[var(--color-success)] border-[var(--color-success)] text-white"
                         : "bg-transparent border-gray-300 text-transparent hover:border-gray-400"
@@ -147,18 +147,18 @@ export default function TodoList() {
                   </button>
 
                   <div className="flex-1 min-w-0">
-                    <h4 className={cn("font-bold text-[15px] truncate text-[var(--color-text-main)]", (todo.recurring_day ? todo.last_completed_date === selectedDate : todo.is_completed) && "text-gray-400 line-through")}>
+                    <h4 className={cn("font-bold text-base sm:text-[15px] truncate text-[var(--color-text-main)]", (todo.recurring_day ? todo.last_completed_date === selectedDate : todo.is_completed) && "text-gray-400 line-through")}>
                       {todo.title}
                     </h4>
-                    <div className="flex flex-wrap gap-x-3 gap-y-1 mt-0.5">
+                    <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1 sm:mt-0.5">
                       {todo.time && (
-                        <div className="text-[10px] text-gray-400 font-bold flex items-center gap-1 uppercase tracking-wider">
-                          <Clock size={10} /> {todo.time}
+                        <div className="text-[11px] sm:text-[10px] text-gray-400 font-bold flex items-center gap-1 uppercase tracking-wider">
+                          <Clock size={11} className="sm:w-2.5 sm:h-2.5" /> {todo.time}
                         </div>
                       )}
                       {todo.location && (
-                        <div className="text-[10px] text-gray-400 font-bold flex items-center gap-1 uppercase tracking-wider">
-                          <MapPin size={10} /> {todo.location}
+                        <div className="text-[11px] sm:text-[10px] text-gray-400 font-bold flex items-center gap-1 uppercase tracking-wider">
+                          <MapPin size={11} className="sm:w-2.5 sm:h-2.5" /> {todo.location}
                         </div>
                       )}
                     </div>
@@ -166,10 +166,10 @@ export default function TodoList() {
 
                   <button
                     onClick={() => removeTodo(todo.id)}
-                    className="absolute right-0 top-1 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1"
+                    className="absolute right-0 top-1 text-gray-300 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity p-2 sm:p-1"
                     title="Delete task"
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={18} className="sm:w-4 sm:h-4" />
                   </button>
                 </motion.div>
               ))}
@@ -179,12 +179,20 @@ export default function TodoList() {
       </div>
 
       {showAddForm ? (
-        <form onSubmit={handleAddSubmit} className="absolute bottom-0 left-0 right-0 bg-white p-4 rounded-b-3xl border-t border-gray-100 flex flex-col gap-3 shadow-2xl z-20">
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm z-20 sm:hidden" onClick={() => setShowAddForm(false)} />
+      ) : null}
+
+      {showAddForm ? (
+        <form 
+          onSubmit={handleAddSubmit} 
+          className="absolute bottom-0 left-0 right-0 bg-white p-6 sm:p-4 rounded-t-3xl sm:rounded-b-3xl border-t border-gray-100 flex flex-col gap-4 sm:gap-3 shadow-[0_-8px_30px_rgba(0,0,0,0.1)] sm:shadow-2xl z-30"
+        >
+          <div className="w-12 h-1 bg-gray-200 rounded-full mx-auto mb-2 sm:hidden" />
           <div className="flex flex-col gap-2">
             <input
               type="text"
               placeholder="What needs to be done?"
-              className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-[var(--color-primary)] transition-all"
+              className="w-full text-base sm:text-sm border border-gray-200 rounded-xl sm:rounded-lg px-4 sm:px-3 py-3 sm:py-2 outline-none focus:border-[var(--color-primary)] transition-all"
               value={newTitle}
               onChange={e => setNewTitle(e.target.value)}
               required
@@ -194,7 +202,7 @@ export default function TodoList() {
               <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">Day / Date</label>
               <div className="flex flex-wrap gap-2">
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => {
-                  const dayOfWeek = day; // 'Sun', 'Mon', etc.
+                  const dayOfWeek = day;
                   const isSelected = recurringDay === dayOfWeek;
                   
                   return (
@@ -206,7 +214,7 @@ export default function TodoList() {
                         setNewDate(null);
                       }}
                       className={cn(
-                        "flex-1 py-2 text-[10px] font-bold rounded-lg border transition-all",
+                        "flex-1 py-2.5 sm:py-2 text-xs sm:text-[10px] font-bold rounded-xl sm:rounded-lg border transition-all",
                         isSelected 
                           ? "bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-sm" 
                           : "bg-gray-50 border-gray-100 text-gray-500 hover:border-gray-200"
@@ -243,7 +251,7 @@ export default function TodoList() {
                     }
                   }}
                   className={cn(
-                    "px-3 text-[10px] font-bold rounded-lg border transition-all whitespace-nowrap",
+                    "px-4 sm:px-3 text-xs sm:text-[10px] font-bold rounded-xl sm:rounded-lg border transition-all whitespace-nowrap",
                     recurringDay === "Everyday"
                       ? "bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-sm" 
                       : "bg-gray-50 border-gray-100 text-gray-500 hover:border-gray-200"
@@ -259,39 +267,39 @@ export default function TodoList() {
               )}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="relative">
-              <Clock className="absolute left-3 top-2.5 text-gray-400" size={14} />
+              <Clock className="absolute left-3 top-3 sm:top-2.5 text-gray-400 sm:w-3.5 sm:h-3.5" size={16} />
               <input
                 type="time"
                 placeholder="Time"
-                className="w-full text-xs border border-gray-200 rounded-lg pl-9 pr-3 py-2 outline-none focus:border-[var(--color-primary)]"
+                className="w-full text-sm sm:text-xs border border-gray-200 rounded-xl sm:rounded-lg pl-10 sm:pl-9 pr-3 py-2.5 sm:py-2 outline-none focus:border-[var(--color-primary)]"
                 value={newTime}
                 onChange={e => setNewTime(e.target.value)}
               />
             </div>
             <div className="relative">
-              <MapPin className="absolute left-3 top-2.5 text-gray-400" size={14} />
+              <MapPin className="absolute left-3 top-3 sm:top-2.5 text-gray-400 sm:w-3.5 sm:h-3.5" size={16} />
               <input
                 type="text"
                 placeholder="Location/Details"
-                className="w-full text-xs border border-gray-200 rounded-lg pl-9 pr-3 py-2 outline-none focus:border-[var(--color-primary)]"
+                className="w-full text-sm sm:text-xs border border-gray-200 rounded-xl sm:rounded-lg pl-10 sm:pl-9 pr-3 py-2.5 sm:py-2 outline-none focus:border-[var(--color-primary)]"
                 value={newLocation}
                 onChange={e => setNewLocation(e.target.value)}
               />
             </div>
           </div>
-          <div className="flex justify-end gap-2 mt-1">
+          <div className="flex justify-end gap-2 mt-2 sm:mt-1">
             <button
               type="button"
               onClick={() => setShowAddForm(false)}
-              className="text-xs font-semibold px-3 py-1.5 text-gray-500 hover:bg-gray-100 rounded-lg"
+              className="text-sm sm:text-xs font-semibold px-4 py-2 sm:px-3 sm:py-1.5 text-gray-500 hover:bg-gray-100 rounded-xl sm:rounded-lg"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="text-xs font-semibold px-4 py-1.5 bg-[var(--color-text-main)] text-white rounded-lg hover:shadow-lg transition-all active:scale-95"
+              className="text-sm sm:text-xs font-semibold px-6 py-2 sm:px-4 sm:py-1.5 bg-[var(--color-text-main)] text-white rounded-xl sm:rounded-lg hover:shadow-lg transition-all active:scale-95"
             >
               Add Task
             </button>
@@ -300,10 +308,10 @@ export default function TodoList() {
       ) : (
         <button
           onClick={() => setShowAddForm(true)}
-          className="absolute bottom-4 left-4 right-4 bg-[var(--color-primary)] hover:bg-orange-600 text-white shadow-lg shadow-orange-200 rounded-xl py-2.5 flex items-center justify-center transition-all active:scale-95"
+          className="absolute bottom-4 left-4 right-4 bg-[var(--color-primary)] hover:bg-orange-600 text-white shadow-lg shadow-orange-200 rounded-2xl py-3.5 sm:py-2.5 flex items-center justify-center transition-all active:scale-95 z-10"
         >
           <Plus size={20} className="mr-2" />
-          <span className="text-sm font-bold">Add New Task</span>
+          <span className="text-base sm:text-sm font-bold">Add New Task</span>
         </button>
       )}
     </div>

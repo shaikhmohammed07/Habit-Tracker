@@ -122,12 +122,15 @@ export default function Home() {
         <div className="xl:col-span-2 flex flex-col gap-6">
           
           {/* Top Row: Todos & Quote */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-auto xl:h-[350px]">
-            <motion.section variants={itemVariants} className="bg-white rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.section 
+              variants={itemVariants} 
+              className="bg-white rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] overflow-hidden h-[400px] md:h-[350px]"
+            >
               <TodoList />
             </motion.section>
             
-            <motion.section variants={itemVariants} className="bg-white rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+            <motion.section variants={itemVariants} className="bg-white rounded-3xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] min-h-[200px] md:h-[350px]">
               <DailyQuoteCard />
             </motion.section>
           </div>

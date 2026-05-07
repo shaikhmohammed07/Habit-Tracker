@@ -8,29 +8,26 @@ export default function WeatherWidget() {
   const [weather, setWeather] = useState<{ temp: number; desc: string; wind: number; pressure: number; humidity: number } | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchWeather = useCallback(async (lat?: number, lon?: number) => {
+  const fetchWeather = useCallback(async (lat: number = 21.1702, lon: number = 72.8311) => {
     console.log("Fetching weather...", { lat, lon });
     try {
       setLoading(true);
-      const API_KEY = "bd5e378503939ddaee76f12ad7a97608";
-      let url = `https://api.openweathermap.org/data/2.5/weather?q=Surat&units=metric&appid=${API_KEY}`;
-      
-      if (lat && lon) {
-        url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
-      }
+      // Using Open-Meteo API
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,pressure_msl,wind_speed_10m`;
 
       console.log("Fetching from URL:", url);
       const res = await fetch(url);
       const data = await res.json();
       console.log("Weather raw data:", data);
 
-      if (data.main) {
+      if (data.current) {
+        const c = data.current;
         setWeather({
-          temp: Math.round(data.main.temp),
-          desc: data.weather[0].main,
-          wind: Math.round(data.wind.speed * 3.6),
-          pressure: data.main.pressure,
-          humidity: data.main.humidity
+          temp: Math.round(c.temperature_2m),
+          desc: mapWeatherCode(c.weather_code),
+          wind: Math.round(c.wind_speed_10m),
+          pressure: Math.round(c.pressure_msl),
+          humidity: c.relative_humidity_2m
         });
       }
     } catch (error) {
@@ -40,6 +37,18 @@ export default function WeatherWidget() {
       setLoading(false);
     }
   }, []);
+
+  const mapWeatherCode = (code: number): string => {
+    if (code === 0) return "Clear";
+    if (code >= 1 && code <= 3) return "Cloudy";
+    if (code >= 45 && code <= 48) return "Fog";
+    if (code >= 51 && code <= 67) return "Rain";
+    if (code >= 71 && code <= 77) return "Snow";
+    if (code >= 80 && code <= 82) return "Rain";
+    if (code >= 85 && code <= 86) return "Snow";
+    if (code >= 95) return "Rain"; // Thunderstorm
+    return "Cloudy";
+  };
 
   const handleGeoLocation = () => {
     if (!navigator.geolocation) {
@@ -143,7 +152,7 @@ export default function WeatherWidget() {
           >
             <span className="text-2xl">⚠️</span>
             <div className="font-bold">Weather Unavailable</div>
-            <div className="text-[10px] opacity-70 px-4">Check your API key or connection</div>
+            <div className="text-[10px] opacity-70 px-4">Wait a moment or sync again</div>
           </motion.div>
         )}
       </AnimatePresence>

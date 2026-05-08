@@ -69,11 +69,8 @@ export default function Home() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--color-app-bg)] p-4 relative overflow-hidden">
-        {/* Background blobs for premium feel */}
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-200/30 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-200/20 rounded-full blur-[120px]" />
-        
+      <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-cover bg-center" style={{ backgroundImage: 'url("/images/sky-auth.png")' }}>
+        <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
         <AuthForm />
       </div>
     );

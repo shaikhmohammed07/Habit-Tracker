@@ -37,22 +37,21 @@ export default function TodoList() {
     }
   }, [showAddForm, selectedDate]);
 
-  // Filtering tasks based on "reset after 12:00 pm" requirement
-  // If it's after 12:00 PM, we only show tasks created after 12:00 PM?
-  // Or we just fetch and if the user wants them "reset", we can filter them out.
-  const displayTodos = todos.filter(todo => {
-    const todayStr = format(new Date(), 'yyyy-MM-dd');
-    if (selectedDate !== todayStr) return true; // Don't filter for other days
+  const isTodoCompleted = (todo: any) => {
+    return todo.recurring_day ? todo.last_completed_date === selectedDate : todo.is_completed;
+  };
 
-    const now = new Date();
-    const noon = setMinutes(setHours(startOfToday(), 12), 0);
-
-    if (isAfter(now, noon)) {
-      // If it's after 12:00 PM today, only show tasks created after noon or incomplete ones
-      const taskDate = new Date(todo.created_at);
-      return isAfter(taskDate, noon) || !todo.is_completed;
-    }
-    return true;
+  const displayTodos = [...todos].sort((a, b) => {
+    const aDone = isTodoCompleted(a);
+    const bDone = isTodoCompleted(b);
+    
+    if (aDone !== bDone) return aDone ? 1 : -1;
+    
+    if (a.time && b.time) return a.time.localeCompare(b.time);
+    if (a.time) return -1;
+    if (b.time) return 1;
+    
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
 
   const handleAddSubmit = async (e: React.FormEvent) => {
@@ -79,7 +78,7 @@ export default function TodoList() {
       <div className="flex justify-between items-center mb-6">
         <div className="flex flex-col">
           <h3 className="text-xl sm:text-lg font-bold">
-            {isSameDay(parseISO(selectedDate), new Date()) ? "Today's" : format(parseISO(selectedDate), "MMM dd's")} Todos
+            {isSameDay(parseISO(selectedDate), new Date()) ? "Today's Tasks" : `Tasks for ${format(parseISO(selectedDate), "MMM dd")}`}
           </h3>
           <div className="flex items-center gap-2 mt-1">
             <button 
@@ -118,7 +117,10 @@ export default function TodoList() {
             <div className="animate-spin w-6 h-6 border-2 border-gray-800 border-t-transparent rounded-full"></div>
           </div>
         ) : displayTodos.length === 0 ? (
-          <div className="text-center text-gray-500 py-8 text-sm">No todos for this session.</div>
+          <div className="text-center text-gray-500 py-12">
+            <p className="text-sm">No tasks scheduled for this day.</p>
+            <p className="text-[11px] mt-1 text-gray-400">Tap the button below to add one!</p>
+          </div>
         ) : (
           <motion.div 
             layout
@@ -135,19 +137,19 @@ export default function TodoList() {
                   className="flex items-start gap-4 group relative pr-8"
                 >
                   <button
-                    onClick={() => toggleTodo(todo.id, todo.recurring_day ? todo.last_completed_date === selectedDate : todo.is_completed)}
+                    onClick={() => toggleTodo(todo.id, isTodoCompleted(todo))}
                     className={cn(
                       "mt-0.5 w-6 h-6 sm:w-[22px] sm:h-[22px] rounded border flex items-center justify-center flex-shrink-0 transition-colors",
-                      (todo.recurring_day ? todo.last_completed_date === selectedDate : todo.is_completed)
+                      isTodoCompleted(todo)
                         ? "bg-[var(--color-success)] border-[var(--color-success)] text-white"
                         : "bg-transparent border-gray-300 text-transparent hover:border-gray-400"
                     )}
                   >
-                    <Check size={14} className={(todo.recurring_day ? todo.last_completed_date === selectedDate : todo.is_completed) ? "opacity-100" : "opacity-0"} />
+                    <Check size={14} className={isTodoCompleted(todo) ? "opacity-100" : "opacity-0"} />
                   </button>
 
                   <div className="flex-1 min-w-0">
-                    <h4 className={cn("font-bold text-base sm:text-[15px] truncate text-[var(--color-text-main)]", (todo.recurring_day ? todo.last_completed_date === selectedDate : todo.is_completed) && "text-gray-400 line-through")}>
+                    <h4 className={cn("font-bold text-base sm:text-[15px] truncate text-[var(--color-text-main)]", isTodoCompleted(todo) && "text-gray-400 line-through")}>
                       {todo.title}
                     </h4>
                     <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1 sm:mt-0.5">
